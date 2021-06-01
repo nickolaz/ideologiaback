@@ -10,6 +10,7 @@ const db = new pg.Pool({
     database: DB_NAME,
     password: DB_PASS,
     port: Number(DB_PORT),
+    ssl: true
 });
 
 async function query(sql){
