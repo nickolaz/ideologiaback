@@ -7,6 +7,7 @@ const auth = require('./api/auth');
 const ong = require('./api/ong');
 const semaforo = require('./api/semaforo');
 const reportes = require('./api/reportes');
+const users = require('./api/users');
 
 dotenv.config()
 let { Server_port } =  process.env;
@@ -31,7 +32,7 @@ app.use('/auth', auth);
 app.use('/ong', ong );
 app.use('/semaforo', semaforo );
 app.use('/reportes', reportes );
-// app.use('/usuario', usuario as any);
+app.use('/usuario', users);
 
 app.listen(Number(Server_port) , '0.0.0.0', () => {
     console.log('Server listening in '+Server_port)

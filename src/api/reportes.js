@@ -32,7 +32,7 @@ app.get('/cant',jwt({secret:JWT_secret}),async function (request, response) {
 });
 
 app.get('/dir',jwt({secret:JWT_secret}),async function (request, response) {
-    let sql = `select nombre , director , contacto from ong;`;
+    let sql = `select nombre , director ,mail,telefono, contacto from ong;`;
     await db.query(sql).then( async(success) =>{
         let res = [];
         if(success.length>0){

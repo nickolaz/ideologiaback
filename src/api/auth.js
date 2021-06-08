@@ -15,14 +15,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.post('/login', async function (request, response) {
     const { user, password } = request.body;
-    console.log("USER: ",user," --- PASS: ",password);
+    // console.log("USER: ",user," --- PASS: ",password);
     // bcrypt.hash(password, saltRounds, function(err, hash) {
     //     // Store hash in your password DB.
     //     console.log("HASH: ",hash);
     //     console.log("ERROR: ",err);
     // });
     if(user !== null && password !== null){
-        let sql = `select password from usuario where username = '${user}'`;
+        let sql = `select password,tipo from usuario where username = '${user}'`;
         await db.query(sql).then((success) =>{
             if(success.length>0){
                 bcrypt.compare(password, success[0].password, function(err, res) {
@@ -31,7 +31,7 @@ app.post('/login', async function (request, response) {
                         response.status(200).set({
                             'Content-Type':'application/json',
                             'Authorization': 'bearer '+jwt.sign({ username: user },JWT_secret)
-                        }).json({status: 'success'});
+                        }).json({status: 'success',tipo: success[0].tipo});
                     }else{
                         //contraseña incorrecta
                         response.status(500).set({

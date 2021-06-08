@@ -19,14 +19,15 @@ drop  table  usuario;
 	
 create table usuario(
     userName varchar(20) primary key ,
-    nombre varchar(30) not null ,
+    nombre varchar(30) ,
     password varchar(128) not null,
-    fechaIns timestamp default now() not null
+    tipo varchar(1),
+    fechaIns timestamp default now()
 );
 
-insert into usuario(userName, nombre, password)
+insert into usuario(userName, nombre, password, tipo)
 values ('admin','Usuario Administrador',
-    '$2b$10$q/QsMev5hYthzZ3LLBA8eeWbJM0Cw9xAvXvxO5mZdC5gHQ80Q46SG');
+    '$2b$10$q/QsMev5hYthzZ3LLBA8eeWbJM0Cw9xAvXvxO5mZdC5gHQ80Q46SG' , 'A');
 
 drop table ong;
 
