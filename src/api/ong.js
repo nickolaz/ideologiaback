@@ -31,6 +31,30 @@ app.get('/',jwt({secret:JWT_secret}),async function (request, response) {
     });
 });
 
+app.get('/home',jwt({secret:JWT_secret}),async function (request, response) {
+    let sql = `select s.ong,s.ideologia,s.publicaciones,s.relacion,s.fuente,
+        (select array_to_string(array_agg(i.pregunta),',') from investigacion i where i.ong = s.ong and i.respuesta = 'Si') as "investigacion",
+        o.direccion,o.telefono,o.mail,o.director,o.instagram,o.twitter,o.contacto,o.web,o.fecha_creacion from ong o ,semaforo s where o.nombre = s.ong;`;
+    await db.query(sql).then( async(success) =>{
+        let resHome = [];
+        if(success.length>0){
+            success.forEach((element)=> resHome.push(element) );
+            response.status(200).set({
+                'Content-Type':'application/json',
+            }).json({status: 'success', home: resHome});
+        }else{
+            response.status(404).set({
+                'Content-Type':'application/json'
+            }).json({status: 'success' , home: resHome});
+        }
+    }).catch((reason) =>{
+        console.log('Reason: '+reason);
+        response.status(500).set({
+            'Content-Type':'application/json'
+        }).json({status: 'error' , message: 'error en la base de datos'});
+    });
+});
+
 app.post('/new',jwt({secret:JWT_secret }), async (request, response) => {
     let { nombre, direccion, telefono, mail, director, intagram, twitter, contacto, web, fechaCreacion} = request.body;    
     if(nombre !== null ){

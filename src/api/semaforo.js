@@ -10,7 +10,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/',jwt({secret:JWT_secret}),async function (request, response) {
-    let sql = `select ong,ideologia,publicaciones,relacion,fuente from semaforo;`;
+    let sql = `select s.ong,s.ideologia,s.publicaciones,s.relacion,s.fuente,
+        (select array_to_string(array_agg(i.pregunta),',') from investigacion i where i.ong = s.ong and i.respuesta = 'Si') as "investigacion" from semaforo s;`;
     await db.query(sql).then( async(success) =>{
         let resSemaforo = [];
         if(success.length>0){
