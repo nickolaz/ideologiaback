@@ -53,7 +53,7 @@ app.post('/new',jwt({secret:JWT_secret }), async (request, response) => {
     if(ong !== null ){
         for(var i = 0 ; i < investigacion.length ; i++){
             const {ong , pregunta , respuesta } = investigacion[i];
-            let sqlI = `insert into investigacion(ong,pregunta,respuesta); 
+            let sqlI = `insert into investigacion(ong,pregunta,respuesta) 
             values ('${ong}','${pregunta}','${respuesta}')`;
             await db.query(sqlI).then( async(success) =>{
             }).catch((reason) =>{
