@@ -32,15 +32,15 @@ values ('admin','Usuario Administrador',
 drop table ong;
 
 create table ong(
-    nombre varchar(50) primary key,
-    direccion varchar(100),
-    telefono varchar(20) , 
-    mail varchar(100),
-    director varchar(100),
-    instagram varchar(100),
-    twitter varchar(100),
-    contacto varchar(100),
-    web varchar(100),
+    nombre varchar(1000) primary key,
+    direccion varchar(1000),
+    telefono varchar(1000) , 
+    mail varchar(1000),
+    director varchar(1000),
+    instagram varchar(1000),
+    twitter varchar(1000),
+    contacto varchar(1000),
+    web varchar(1000),
     fecha_creacion varchar(20)
 );
 
@@ -50,19 +50,19 @@ drop table investigacion;
 
 create table investigacion(
     id serial,
-    ong varchar(50),
-    pregunta varchar(50),
-    respuesta varchar(50)
+    ong varchar(1000),
+    pregunta varchar(1000),
+    respuesta varchar(1000)
 );
 
 drop table semaforo;
 
 create table semaforo(
-    ong varchar(50) primary key,
-    ideologia varchar(100),
-    publicaciones varchar(200),
-    relacion varchar(100),
-    fuente varchar(200)
+    ong varchar(1000) primary key,
+    ideologia varchar(1000),
+    publicaciones varchar(1000),
+    relacion varchar(1000),
+    fuente varchar(1000)
 );
 
 select ong,ideologia,publicaciones,relacion,fuente from semaforo;
