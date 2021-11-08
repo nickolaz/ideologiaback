@@ -66,3 +66,6 @@ create table semaforo(
 );
 
 select ong,ideologia,publicaciones,relacion,fuente from semaforo;
+
+ALTER TABLE public.ong
+    ADD COLUMN fb character varying(1000);

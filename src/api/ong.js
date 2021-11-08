@@ -10,7 +10,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/',jwt({secret:JWT_secret}),async function (request, response) {
-    let sql = `select nombre,direccion,telefono,mail,director,instagram,twitter,contacto,web,fecha_creacion from ong;`;
+    let sql = `select nombre,direccion,telefono,mail,director,instagram,twitter,fb,web,fecha_creacion from ong;`;
     await db.query(sql).then( async(success) =>{
         let resOng = [];
         if(success.length>0){
@@ -34,7 +34,7 @@ app.get('/',jwt({secret:JWT_secret}),async function (request, response) {
 app.get('/home',jwt({secret:JWT_secret}),async function (request, response) {
     let sql = `select s.ong,s.ideologia,s.publicaciones,s.relacion,s.fuente,
         (select array_to_string(array_agg(i.pregunta),',') from investigacion i where i.ong = s.ong and i.respuesta = 'Si') as "investigacion",
-        o.direccion,o.telefono,o.mail,o.director,o.instagram,o.twitter,o.contacto,o.web,o.fecha_creacion from ong o ,semaforo s where o.nombre = s.ong;`;
+        o.direccion,o.telefono,o.mail,o.director,o.instagram,o.twitter,o.fb,o.web,o.fecha_creacion from ong o ,semaforo s where o.nombre = s.ong;`;
     await db.query(sql).then( async(success) =>{
         let resHome = [];
         if(success.length>0){
@@ -56,12 +56,12 @@ app.get('/home',jwt({secret:JWT_secret}),async function (request, response) {
 });
 
 app.post('/new',jwt({secret:JWT_secret }), async (request, response) => {
-    let { nombre, direccion, telefono, mail, director, intagram, twitter, contacto, web, fechaCreacion} = request.body;    
+    let { nombre, direccion, telefono, mail, director, intagram, twitter,fb, contacto, web, fechaCreacion} = request.body;    
     if(nombre !== null ){
         let sql = `insert into 
-        ong(nombre,direccion,telefono,mail,director,instagram,twitter,contacto,web,fecha_creacion) 
+        ong(nombre,direccion,telefono,mail,director,instagram,twitter,fb,web,fecha_creacion) 
         values ('${nombre}','${direccion}','${telefono}','${mail}','${director}'
-        ,'${intagram}','${twitter}','${contacto}','${web}','${fechaCreacion}')`;
+        ,'${intagram}','${twitter}','${fb}','${web}','${fechaCreacion}')`;
         await db.query(sql).then( async(success) =>{
             response.status(200).set({
                 'Content-Type':'application/json',
@@ -92,11 +92,11 @@ app.post('/delete',jwt({secret:JWT_secret }), async (request, response) => {
 });
 
 app.post('/edit',jwt({secret:JWT_secret }), async (request, response) => {
-    let { nombre, direccion, telefono, mail, director, intagram, twitter, contacto, web, fechaCreacion} = request.body;    
+    let { nombre, direccion, telefono, mail, director, intagram, twitter, fb , contacto, web, fechaCreacion} = request.body;    
     if(nombre !== null ){
         let sql = `update ong set direccion = '${direccion}' ,telefono = '${telefono}' 
         ,mail = '${mail}' ,director = '${director}' ,instagram = '${intagram}' 
-        ,twitter = '${twitter}' ,contacto = '${contacto}' ,web = '${web}' 
+        ,twitter = '${twitter}' , fb = '${fb}' , web = '${web}' 
         ,fecha_creacion = '${fechaCreacion}' where nombre = '${nombre}'`;
         await db.query(sql).then( async(success) =>{
             response.status(200).set({
